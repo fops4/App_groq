@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8001/api";
+const API_URL = import.meta.env.VITE_API_URL || "https://85bd-41-211-125-169.ngrok-free.app/api";
 
 export const api = {
   async login(username, password) {
