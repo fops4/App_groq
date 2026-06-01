@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || "https://d477-41-211-125-169.ngrok-free.app/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8001/api";
 
 // Helper for headers to include ngrok skip warning
 const getHeaders = (extraHeaders = {}) => ({

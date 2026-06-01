@@ -12,17 +12,22 @@ function App() {
   
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(true) // Default open on desktop
   const [showProfileMenu, setShowProfileMenu] = useState(false)
+
+  // On mobile, close sidebar by default
+  useEffect(() => {
+    if (window.innerWidth <= 768) {
+      setSidebarOpen(false)
+    }
+  }, [])
 
   if (!user) {
     return (
       <div className="login-container">
         <div className="auth-card">
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
-             <div style={{ background: '#0f172a', padding: '14px', borderRadius: '16px' }}>
-                <Bot color="white" size={36} />
-             </div>
+          <div className="auth-logo-box">
+             <Bot color="white" size={32} />
           </div>
           <h1>Bienvenue</h1>
           <p>Connectez-vous pour continuer</p>
@@ -38,10 +43,16 @@ function App() {
 
   return (
     <div className="app-container">
-      {/* Sidebar with transform logic for mobile */}
-      <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
-        <div className="sidebar-logo">Groq.</div>
-        <button className="new-chat-btn" onClick={() => { startNewChat(); setSidebarOpen(false); }}>
+      {/* Sidebar */}
+      <aside className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingRight: '0.5rem' }}>
+          <div className="sidebar-logo">Groq.</div>
+          <button className="mobile-toggle" onClick={() => setSidebarOpen(false)} style={{ color: 'white', opacity: 0.5 }}>
+            <X size={20} />
+          </button>
+        </div>
+        
+        <button className="new-chat-btn" onClick={() => { startNewChat(); if(window.innerWidth <= 768) setSidebarOpen(false); }}>
           <Plus size={20} /> Nouveau Chat
         </button>
         <div className="history-list">
