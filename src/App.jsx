@@ -38,6 +38,7 @@ function App() {
 
   return (
     <div className="app-container">
+      {/* Sidebar with transform logic for mobile */}
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-logo">Groq.</div>
         <button className="new-chat-btn" onClick={() => { startNewChat(); setSidebarOpen(false); }}>
@@ -68,23 +69,30 @@ function App() {
             <div className="avatar">
               <User size={18} />
             </div>
-            <span className="username">{user.username}</span>
-            <Settings size={16} style={{ marginLeft: 'auto', opacity: 0.5 }} />
+            <span className="username" style={{ flex: 1, textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user.username}</span>
+            <Settings size={16} style={{ opacity: 0.5 }} />
           </button>
         </div>
       </aside>
 
+      {/* Overlay visible only on mobile when sidebar is open */}
+      <div className={`overlay ${sidebarOpen ? 'visible' : ''}`} onClick={() => setSidebarOpen(false)}></div>
+
       <div className="main-content">
         <header>
-          <button className="mobile-toggle" onClick={() => setSidebarOpen(true)}>
-            <Menu size={24} />
-          </button>
-          <div className="header-title">
-            {currentConversationId ? 'Discussion active' : 'Nouvelle session'}
+          <div className="header-left">
+            <button className="mobile-toggle" onClick={() => setSidebarOpen(true)}>
+              <Menu size={24} />
+            </button>
+            <div className="header-title">
+              {currentConversationId ? 'Chat' : 'Nouveau Chat'}
+            </div>
+          </div>
+          <div className="header-right">
+             {/* Small logo for mobile */}
+             <div style={{ fontWeight: 800, opacity: 0.2 }}>Groq.</div>
           </div>
         </header>
-        
-        {sidebarOpen && <div className="overlay" onClick={() => setSidebarOpen(false)}></div>}
         
         <main>
           <ChatWindow userId={user.id} />

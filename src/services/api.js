@@ -1,10 +1,17 @@
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8001/api";
 
+// Helper for headers to include ngrok skip warning
+const getHeaders = (extraHeaders = {}) => ({
+  "Content-Type": "application/json",
+  "ngrok-skip-browser-warning": "true", // CRITICAL for ngrok testing
+  ...extraHeaders
+});
+
 export const api = {
   async login(username, password) {
     const res = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: getHeaders(),
       body: JSON.stringify({ username, password })
     });
     if (!res.ok) throw new Error("Unauthorized");
@@ -12,7 +19,9 @@ export const api = {
   },
 
   async getHistory(userId) {
-    const res = await fetch(`${API_URL}/chat/history/${userId}`);
+    const res = await fetch(`${API_URL}/chat/history/${userId}`, {
+      headers: getHeaders()
+    });
     if (!res.ok) throw new Error("History failed");
     return res.json();
   },
@@ -20,7 +29,7 @@ export const api = {
   async chatCompletions(payload, onChunk) {
     const res = await fetch(`${API_URL}/chat/completions`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: getHeaders(),
       body: JSON.stringify(payload)
     });
 
